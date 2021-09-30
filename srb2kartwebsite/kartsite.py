@@ -260,7 +260,8 @@ def skinshop():
         print("No kart users file exists.")
         userName = None
     # get the user's score
-    playerScore = getKartScore(userName)
+    if userName != None: playerScore = getKartScore(userName)
+    else: playerScore = {"totalScore": 0}
     
     # get data from the skins and add possible choices to the form
     if os.path.exists(skinInfoFile):
