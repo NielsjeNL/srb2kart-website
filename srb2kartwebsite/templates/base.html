@@ -1,0 +1,126 @@
+<!doctype HTML>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+        <title>{% block title %}{% endblock %} - Aqua's Skin Shop</title>
+    </head>
+
+    
+    <body>
+      <nav class="navbar navbar-expand-lg text-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-dark" href="#">
+                <img src="{{url_for('static', filename='images/Offer_Juicebox.png')}}" alt="" width="64" height="48">
+                Aqua's Karthouse
+              </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link text-dark" aria-current="page" href="/home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" aria-current="page" href="/skinshop">Skin shop</a>
+              </li>
+              <li class="nav-item">
+                {% if discordUser.id != 0 %}
+                  <a class="nav-link text-dark" aria-current="page" href="/logout">Log out</a>
+                {% else %}
+                  <span class="nav-link text-dark">Log out</span>
+                {% endif %}
+              </li>
+            </ul>
+            <ul class="navbar-nav mb-2 mb-lg-0 discordInfo">
+            <span class="navbar-text">
+              {% if discordUser.id != 0 %}
+                <img src='{{discordUser.avatar_url}}' class="rounded-circle" height="32px" width="32px" /> 
+                <span>
+                  {{discordUser.name}}
+                </span>
+              
+              {% else %}
+              <img src='{{url_for("static", filename="images/picardy.png")}}' class="rounded-circle" height="32px"/> 
+              <span>
+                <a aria-current="page" class="discordLogin" href="/login">Log in</a>
+              </span>
+              {% endif %}
+            </ul>
+            </span>
+          </div>
+        </div>
+      </nav>
+      
+      <div class="container-fluid">
+          
+        <div id="content">
+          {% block content %}{% endblock %}
+        </div>
+          
+        <div id="footer">
+          {% block footer %}
+          <div class="row">
+            <span class="text-warning text-center">
+              &copy; Made by <a href="https://srb2kart.aqua.fyi/">Aqua</a>.
+            </span>
+        </div>
+          {% endblock %}
+        </div>
+
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+      
+    <style>
+      body {
+        background-color: black;
+      }
+
+      @font-face {
+        font-family: RaceSport;
+        src: url("{{ url_for('static', filename='RaceSport-nR1j0.ttf') }}");
+      }
+
+      h1 {
+        font-family: RaceSport;
+      }
+
+      nav {
+        background-color: #F7C12F;
+      }
+      
+      a.navbar-brand {
+        font-family: RaceSport;
+      }
+
+      a.nav-link {
+        text-decoration: underline;
+        font-weight: bold;
+      }
+
+      .discordInfo {
+        background-color: black;
+        color: white;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: .75em;
+      }
+      .discordLogin {
+        color: #F7C12F;
+        font-weight: bold;
+      }
+    </style>
+  
+  </body>
+
+</html>
+

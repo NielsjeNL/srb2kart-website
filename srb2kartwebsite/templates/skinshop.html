@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+
+{% block title %}Skin shop{% endblock %}
+
+{% block content %}
+
+    <h1 class="text-center text-warning mt-3">Aqua's SRB2Kart Skin Shop</h1>
+
+    <div class="container">
+        <h2 class="text-center text-warning">How it works</h2>
+        <div class="row mb-3">
+            <div class="col text-center text-warning">
+                <h4>Donating points</h4>
+                On this page you can donate points towards skins.<br>
+                The points you donate go towards a skin's file.<br><br>
+
+                Every week at Monday 06.00 CET, the character randomizer is started.<br>
+                The randomizer will look at the top 5 skins with the most points donated to,<br>
+                and reserve those spots. It then selects random skin files for the remaining<br>
+                spots and enables these files for the SRB2Kart servers.<br><br>
+
+                Your points will stay visible ingame until the randomizer has run,<br>
+                after which the points will be deducted.
+
+                <hr>
+
+                <h4>Legend</h4>
+                <span class="text-center fs-6">TOTAL:</span> total amount of points on that server<br>
+                <span class="text-center fs-6">RESERVE:</span> points already donated towards skins<br>
+                <span class="text-center fs-6">SPEND:</span> points available for spending<br><br>
+                
+                <h4>Button colors</h4>
+                <span class="text-center fs-6">Orange:</span> skin has no points<br>
+                <span class="text-center fs-6">Blue:</span> skin has points donated by others<br>
+                <span class="text-center fs-6">Teal:</span> skin has points donated by you (and possibly others)<br>
+            </div>
+            <div class="col text-center text-warning">
+                <h4>Gaining points</h4>
+                You gain points by playing SRB2Kart on the Aqua's Karthouse servers.<br>
+                The points you score ingame are saved and become available for use on this page.<br><br>
+
+                Have more points than shown on this page? Suddenly lost points?<br>
+                Notify Aqua so he can take a look.
+                <hr>
+                <h4>Using the shop</h4>
+                Fill in the amount of points you'd like to donate and<br>
+                choose the server you want the points to be donated from.<br>
+                Click the skin you want to donate points to, and click the Submit button.<br>
+                You will get a message indicating the result of your donation.
+                <hr>
+                <h4>Need more help?</h4>
+                Join the Aqua's Karthouse Discord to get help or ask questions:<br>
+                <a href="https://discord.gg/8XXXwZk"><img src="https://discordapp.com/api/guilds/718834285989199894/widget.png?style=banner3" alt="Discord invite"></a>
+            </div>
+        </div>
+    </div>
+
+    <hr style="border-top: 10px solid #F7C12F; opacity: 1;">
+
+    <div class="container">
+        {% if userName != None %}
+            <div class="row mb-2">
+                    <h2 class="text-center text-warning">{{userName}}</h2>
+            </div>
+
+            <div class="row mb-2">
+                <h3 class="text-center text-warning">Total points: <b>{{playerScore['totalScore']}}</b></h3><br>
+            </div>
+
+            <div class="row mb-5 justify-content-md-center text-warning">
+                {% for item in scoreBuffer %}
+                <div class="col d-flex flex-column justify-content-center">
+                    <div class="row">
+                        <h3 class="text-center fs-4"><b>{{item}}</b></h3>
+                    </div>
+                        {% if userName in reservedPoints["players"] and item in reservedPoints["players"][userName]["servers"] %}
+                        <div class="row">
+                            <span class="text-center fs-4">TOTAL: <b>{{playerScore[item]}}</b></span>
+                        </div>
+                        <div class="row">
+                            <span class="text-center fs-4">RESERVE: <b>{{reservedPoints["players"][userName]["servers"][item]}}</b></span>
+                        </div>
+                        <div class="row">
+                            <span class="text-center fs-4">SPEND: <b>{{scoreBuffer[item]}}</b></span>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <span class="text-center fs-4">TOTAL: <b>{{scoreBuffer[item]}}</b></span>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <hr style="border-top: 10px solid #F7C12F; opacity: 1;">
+        {% endif %}
+        
+        <div class="form-wrapper text-warning">
+            <h2 class="title text-center">Skin shop</h2>
+            
+            {% if successMessage != None %}
+            <div class="row">
+                <div class="alert alert-donated alert-dismissible fade show" role="alert">
+                    {{successMessage}}
+                </div>
+            </div>
+            {% endif %}
+            {% if errorMessage != None %}
+            <div class="row">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{errorMessage}}
+                </div>
+            </div>
+            {% endif %}
+            
+            <form method="POST" action="" class="form-check">
+                <div class="row mb-3">
+                    {% if userName != None and playerScore['totalScore'] != 0 and skinData|length != 1 %}
+                        <div class="col">
+                            <div class="mb-2">
+                                {{ form.csrf_token() }}
+                                <label for="pointsDonating" class="form-label">Amount of points to donate</label>
+                                {{form.pointsDonating(class="form-control", value=500, min=1, autocomplete="off", maxlength="10")}}
+                                <div id="pointsDonateHelp" class="form-text">Fill in the amount of points you want to donate to your chosen skin.</div>
+                            </div>
+                            <div class="mb-2">
+                                <label for="chosenServer" class="form-label">Server to donate points from</label>
+                                {{form.chosenServer(class="form-control")}}
+                                <div id="serverHelp" class="form-text">Choose the server you want to donate points from.</div>
+                            </div>
+                            {{ form.submit(class="btn btn-warning justify-content-center w-100") }}
+                        </div>
+                        {% elif skinData|length == 1 %}
+                        <div class="col text-center">
+                            <span class="fs-3"><b>Uh-oh!</b></span><br/>
+                            <span>The owner has not set up this site properly.</span>
+                        </div>
+                        {% elif userName != None and playerScore['totalScore'] == 0 %}
+                        <div class="col text-center">
+                            <span class="fs-3"><b>Uh-oh!</b></span><br/>
+                            <span>You don't have any points.<br/>
+                            To gain points, play SRB2Kart on one of the Aqua's Karthouse servers.</span>
+                        </div>
+                        {% elif userName == None and discordUser.id != 0 %}
+                        <div class="col text-center">
+                            <span class="fs-3"><b>Uh-oh!</b></span><br/>
+                            <span>It seems we don't know who you are yet.<br/>
+                            If you would like to make use of the shop, <a href="https://discord.gg/8XXXwZk">join the Aqua's Karthouse Discord</a> and use <code>$kartuserbind</code>.</span>
+                        </div>
+                        {% else %}
+                        <div class="col text-center">
+                            <span class="fs-3 text-center text-warning">You must log in to use the skin shop.</span>
+                        </div>
+                        {% endif %}
+                    <div class="col">
+                        <h3 class="text-center">Current top 5 skins:</h3>
+                        
+                        <div class="text-center">
+                        {% if sortedSkins|length != 0 %}
+                            {% for skin, points in sortedSkins[:5] %}
+                                <span class="fs-3">{{loop.index}}. {{skin}}</span>
+                                <span class="fs-6">{{points}} points</span><br>
+                            {% endfor %}
+                        {% else %}
+                            <p>No donations have been made yet. Be the change you want to be.</p>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            {% macro get_charimgurl(name) -%}
+                <img src="{{ url_for('static', filename='charwants/{}.png'.format(name)) }}" height="48px" />
+            {%- endmacro %}
+
+            {% if playerScore['totalScore'] != 0 and discordUser.id != 0 %}
+                <div class="text-center row">
+                    <h3>CLICK THE SKIN YOU WANT TO DONATE TO</h3>
+                </div>
+            {% else %}
+            <div class="text-center row">
+                <h3>SKINS YOU CAN DONATE TO</h3>
+            </div>
+            {% endif %}
+
+            {% for subfield in form.skinsRadio %}
+                {% if loop.index % 5 == 1 or loop.first %}
+                    <div class="btn-group d-flex gap-2 mb-2">
+                {% endif %}
+                
+                <div class="col">
+                {% if discordUser.id != 0 %}
+                    {% if skinData[subfield.data]['reservedPoints'] != "-- no points --" %}
+                        {% if userName in reservedPoints["players"] and subfield.data in reservedPoints["players"][userName]["filesDonatedTo"] %}
+                            <label class="btn btn-outline-donated w-100" for="{{subfield.id}}">
+                        {% else %}
+                            <label class="btn btn-outline-info w-100" for="{{subfield.id}}">
+                        {% endif %}
+                    {% else %}
+                        <label class="btn btn-outline-warning w-100" for="{{subfield.id}}">
+                    {% endif %}
+                {% else %}
+                    <label class="btn btn-outline-warning w-100" for="{{subfield.id}}">
+                {% endif %}
+                            {{subfield}}
+                            {{get_charimgurl(subfield.data)}}<br>
+                            <span class="fs-3">{{subfield.label.text}}</span><br>
+                            <small>SPD {{skinData[subfield.data]['kartspeed']}} / WGT {{skinData[subfield.data]['kartweight']}}</small><br>
+                            <!--<small>{{skinData[subfield.data]['file']}}</small><br>-->
+                            <small>{{skinData[subfield.data]['reservedPoints']}}</small>
+                        </label>
+                </div>
+
+                {% if loop.index % 5 == 0 or loop.last %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        input[type="radio"]{
+            float: left;
+            margin-left: -0.5em;
+
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            background-color: inherit;
+            border-color: inherit;
+            border-style: solid;
+            border-width: thin;
+            border-radius: .25rem;
+            
+            width: 15px;
+            height: 15px;
+        }
+        input[type="radio"]:hover{
+            background-color: inherit;
+            border-color: black;
+            border-style: solid;
+        }
+        input[type="radio"]:checked{
+            background-color: #F7C12F;
+            border-color: black;
+            border-style: solid;
+            width: 15px;
+            height: 15px;
+        }
+
+        .alert-donated {
+            color: black;
+            background-color: #F7C12F;
+            border-color: #F7C12F;
+        }
+        img.skinimage {
+            margin-left: -0.5em;
+        }
+
+        span.fs-3 {
+            font-family: RaceSport
+        }
+        span.text-center.fs-4 {
+            font-family: RaceSport
+        }
+        span.text-center.fs-5 {
+            font-family: RaceSport
+        }
+        span.text-center.fs-6 {
+            font-family: RaceSport
+        }
+        h1{
+            text-decoration: underline;
+        }
+        h2 {
+            font-family: RaceSport;
+            text-decoration: underline;
+        }
+        h3 {
+            font-family: RaceSport;
+            text-decoration: underline;
+        }
+        h4 {
+            font-family: RaceSport;
+        }
+
+        label.btn ~ input[type=radio]:checked {
+            background-color: #e6e6e6;
+            border-color: #adadad;
+            color: #333;
+        }
+
+        .btn-outline-donated {
+            color: #01ff89;;
+            border-color: #01ff89;
+        }
+        .btn-outline-donated:hover {
+            color: #000;
+            background-color: #01ff89;
+            border-color: #01ff89;
+        }
+
+    </style>
+</form>
+
+{% endblock %}

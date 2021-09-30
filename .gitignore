@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Custom test files
+tests/
+*.json
+
+# Ignore stuff from the skin shop
+transactionlog.txt
+srb2kartwebsite/static/images/charwants/*

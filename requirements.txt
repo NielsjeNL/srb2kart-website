@@ -1,0 +1,5 @@
+Flask
+Flask-Discord
+requests_oauthlib
+cachetools
+discord.py
