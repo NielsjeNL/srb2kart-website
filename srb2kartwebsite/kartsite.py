@@ -58,7 +58,7 @@ def getKartScore(playerName):
                 lineSplit = line.split(";")
                 
                 if playerName == lineSplit[0]:
-                    print(f"Matched user {playerName} for {server}: {int(lineSplit[1])} points")
+                    print(f"[Kart scores] Matched user {playerName} for {server}: {int(lineSplit[1])} points")
                     playerScoreTotal += int(lineSplit[1])
                     playerScoreDict[server] = int(lineSplit[1])
 
@@ -112,7 +112,7 @@ def reservePoints(form, skinData, userName, reservedPoints):
         reservedPoints["players"][userName]["filesDonatedTo"].append(form.skinsRadio.data)
         doneReserving = True
     except: 
-        print("PLAYER NO POINTS DONATED FOR CHOSEN SERVER YET")
+        print("[Reserve points player] Player has no points donated towards specified server")
         doneReserving = False
 
     if doneReserving == False:
@@ -121,14 +121,14 @@ def reservePoints(form, skinData, userName, reservedPoints):
             reservedPoints["players"][userName]["filesDonatedTo"].append(form.skinsRadio.data)
             doneReserving = True
         except: 
-            print("PLAYER NO POINTS DONATED YET")
+            print("[Reserve points player] Player has no points donated yet")
             doneReserving = False
 
     if doneReserving == False:
         try:
             reservedPoints["players"][userName] = {"servers": {form.chosenServer.data: int(form.pointsDonating.data)}, "filesDonatedTo": [form.skinsRadio.data]}
         except:
-            print("I'm fucking fabulous.")
+            print("[Reserve points player] I have fallen and I can't get up.")
     
     # also update the total points counter
     reservedPoints["files"][skinFile]['totalPoints'] = reservedPoints["files"][skinFile]['totalPoints'] + int(form.pointsDonating.data)
@@ -153,10 +153,10 @@ def loadReservedPoints(pointsFile):
                 reservedPoints = json.load(file)
             file.close()
 
-            print("NOTE: Loaded reserved points JSON succesfully.")
+            print("[Load reserved points] Loaded reserved points succesfully from disk.")
             return reservedPoints
         except:
-            print("NOTE: Couldn't load reserved points from disk. Using initial values and (re)creating file.")
+            print("[Load reserved points] Couldn't load reserved points from disk. Using initial values and (re)creating file.")
             reservedPoints = { "files": {}, "players": {} }
             
             # write initial values to disk
@@ -246,13 +246,13 @@ def skinshop():
         kartUsersData.close()
 
         if str(discordUser.id) in kartUsers['kartUsers']:
-            print(f"Matched {discordUser.name} to {kartUsers['kartUsers'][str(discordUser.id)]['playerName']}")
+            print(f"[Discord <> Kart bind] Matched {discordUser.name} to {kartUsers['kartUsers'][str(discordUser.id)]['playerName']}")
             userName = kartUsers['kartUsers'][str(discordUser.id)]['playerName']
         else:
-            print(f"Could not match {discordUser.name}. Using empty data for profile")
+            print(f"[Discord <> Kart bind] Could not match {discordUser.name}. Using empty data for profile")
             userName = None
     else:
-        print("No kart users file exists.")
+        print("[Discord <> Kart bind] No kart users file exists. Unable to match any users.")
         userName = None
     # get the user's score
     if userName != None: playerScore = getKartScore(userName)
@@ -263,7 +263,7 @@ def skinshop():
         with open (skinInfoFile, "r") as skinFile:
             skinData = json.load(skinFile)
     else:
-        print("No skin data file exists.")
+        print("[Skin info] No skin info file exists.")
         skinData = {"no skins found": {
             "realname": "no skins found",
             "facewant": "pibardy",
@@ -283,7 +283,7 @@ def skinshop():
     
     # determine if the player already reserved points for stuff and deduct that amount from their available amount of points
     if userName in reservedPoints["players"]:
-        print(f"{userName} donated points previously")
+        print(f"[Point donation] {userName} donated points previously")
         for server in reservedPoints["players"][userName]["servers"]:
             scoreBuffer[server] -= reservedPoints["players"][userName]["servers"][server]
 
@@ -295,7 +295,6 @@ def skinshop():
     for skin in skinData:
         form.skinsRadio.choices.append([skin, str(skinData[skin]['realname'].replace("_", " "))])
 
-    # BUG: when submitting the form, a user's total scores for a server gets the donated amount added. after refresh its fine
     if request.method == "POST" and form.validate_on_submit():
         print("[Form] Form validated succesfully.")
         print("[Form] User donating:", userName)
@@ -322,7 +321,7 @@ def skinshop():
         # reserve the points
         if validRequest == True and reservePoints(form, skinData, userName, reservedPoints) == 0:
             skinName = str(skinData[form.skinsRadio.data]['realname']).replace("_", " ")
-            print(f"{userName} donated {form.pointsDonating.data} points from {form.chosenServer.data} towards {skinName} (from {skinData[form.skinsRadio.data]['file']}).")
+            print(f"[Form] {userName} donated {form.pointsDonating.data} points from {form.chosenServer.data} towards {skinName} (from {skinData[form.skinsRadio.data]['file']}).")
             successMessage = f"You donated {form.pointsDonating.data} points from {form.chosenServer.data} towards {skinName} (from {skinData[form.skinsRadio.data]['file']})."
 
             # deduct the points from the user's scoreBuffer
@@ -355,7 +354,7 @@ def skinshop():
             errorMessage = "Select a skin to donate points to."
             successMessage = None
         else: 
-            errorMessage = "An unknown error occured. Please notify Aqua."
+            errorMessage = "An unknown error occured. Reload the page and try again. Please notify Aqua if this error persists."
             successMessage = None
     else: 
         errorMessage = None
