@@ -69,12 +69,9 @@ def getKartScore(playerName):
 
     return playerScoreDict
 
-def reservePoints(form, skinData, userName):
+def reservePoints(form, skinData, userName, reservedPoints):
     """Takes a form from the skin shop and writes data in a JSON file.
-    Donated points go towards skin files."""
-
-    # take previously loaded reservedPoints
-    global reservedPoints
+    Donated points go towards skin files. Current reserved poitns must be passed to this function."""
 
     # match the chosen skin to a skin file
     if form.skinsRadio.data in skinData:
@@ -147,29 +144,27 @@ def reservePoints(form, skinData, userName):
         json.dump(reservedPoints, file, indent=4)
         file.close()
     return 0
-#####################################
-# first we load the reserved points to use in other functions
-# when points are changed the file should immediately be overwritten
-if os.path.isfile(pointsFile):
-    try:
-        with open(pointsFile, "r") as file:
-            reservedPoints = json.load(file)
-        file.close()
-        print("NOTE: Loaded reserved points JSON succesfully.")
-    except:
-        print("NOTE: Couldn't load reserved points. Quitting the program; please investigate. There's likely a formatting error in the reserved points JSON file.")
-        exit(1)
 
-    # make sure it's not empty data
-    if len(reservedPoints) == 0:
-        print("NOTE: Reserved points file contains no keys/values. Assuming no data is present and using initial values.")
-        reservedPoints = { "files": {}, "players": {} }
-else:
-    print("NOTE: Couldn't load reserved points as JSON does not exist. Creating it.")
-    with open(pointsFile, "w") as file:
-        reservedPoints = { "files": {}, "players": {}, "skinPoints": {} }
-        json.dump(reservedPoints, file, indent=4)
-    file.close()
+def loadReservedPoints(pointsFile):
+    # first we load the reserved points to use in other functions
+    # when points are changed the file should immediately be overwritten
+        try:
+            with open(pointsFile, "r") as file:
+                reservedPoints = json.load(file)
+            file.close()
+
+            print("NOTE: Loaded reserved points JSON succesfully.")
+            return reservedPoints
+        except:
+            print("NOTE: Couldn't load reserved points from disk. Using initial values and (re)creating file.")
+            reservedPoints = { "files": {}, "players": {} }
+            
+            # write initial values to disk
+            with open(pointsFile, "w") as file:
+                json.dump(reservedPoints, file, indent=4)
+            file.close()
+
+            return reservedPoints
 
 #####################################
 # FLASK ROUTES
@@ -224,8 +219,8 @@ def home():
 def skinshop():
     """Renders a page and form in which users can donate points towards skin files."""
 
-    # take global reservedPoints
-    global reservedPoints
+    # load reserved points from disk
+    reservedPoints = loadReservedPoints(pointsFile)
 
     # get data from the discord user
     if discord.authorized:
@@ -325,7 +320,7 @@ def skinshop():
             validRequest = True
 
         # reserve the points
-        if validRequest == True and reservePoints(form, skinData, userName) == 0:
+        if validRequest == True and reservePoints(form, skinData, userName, reservedPoints) == 0:
             skinName = str(skinData[form.skinsRadio.data]['realname']).replace("_", " ")
             print(f"{userName} donated {form.pointsDonating.data} points from {form.chosenServer.data} towards {skinName} (from {skinData[form.skinsRadio.data]['file']}).")
             successMessage = f"You donated {form.pointsDonating.data} points from {form.chosenServer.data} towards {skinName} (from {skinData[form.skinsRadio.data]['file']})."
@@ -340,7 +335,7 @@ def skinshop():
 
         else:
             if errorMessage == None:
-                errorMessage = "Your points could not be reserved. Please notify Aqua."
+                errorMessage = "Your points could not be reserved. Reload the page and try again. Please notify Aqua if this error persists."
                 successMessage = None
 
     elif request.method == "POST" and not form.validate_on_submit():
