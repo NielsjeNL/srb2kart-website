@@ -58,7 +58,7 @@ def getKartScore(playerName):
                 lineSplit = line.split(";")
                 
                 if playerName == lineSplit[0]:
-                    print(f"[Kart scores] Matched user {playerName} for {server}: {int(lineSplit[1])} points")
+                    print(f"[Kart scores] {playerName}: {int(lineSplit[1])} points on {server}")
                     playerScoreTotal += int(lineSplit[1])
                     playerScoreDict[server] = int(lineSplit[1])
 
