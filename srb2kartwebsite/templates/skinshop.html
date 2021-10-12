@@ -159,8 +159,16 @@
                         <div class="text-center">
                         {% if sortedSkins|length != 0 %}
                             {% for skin, points in sortedSkins[:5] %}
+                            {% if points < 500 %}
+                                <span class="text-danger">
+                            {% else %}
+                                <span>
+                            {% endif %}
+                                
                                 <span class="fs-3">{{loop.index}}. {{skin}}</span>
                                 <span class="fs-6">{{points}} points</span><br>
+
+                                </span>
                             {% endfor %}
                         {% else %}
                             <p>No donations have been made yet. Be the change you want to be.</p>
