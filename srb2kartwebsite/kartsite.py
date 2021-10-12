@@ -157,7 +157,7 @@ def loadReservedPoints(pointsFile):
             return reservedPoints
         except:
             print("[Load reserved points] Couldn't load reserved points from disk. Using initial values and (re)creating file.")
-            reservedPoints = { "files": {}, "players": {} }
+            reservedPoints = { "files": {}, "players": {}, "skinPoints": {} }
             
             # write initial values to disk
             with open(pointsFile, "w") as file:
@@ -371,6 +371,7 @@ def skinshop():
     # sort the skins top 5 and pass it on
     sortedSkins = sorted(reservedPoints["skinPoints"].items(), key=lambda item: item[1], reverse=True)
 
+    # render the page and serve it
     return render_template(
         'skinshop.html', 
         form=form, 
