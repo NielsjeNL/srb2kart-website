@@ -122,7 +122,7 @@
                             <div class="mb-2">
                                 {{ form.csrf_token() }}
                                 <label for="pointsDonating" class="form-label">Amount of points to donate</label>
-                                {{form.pointsDonating(class="form-control", value=500, min=1, autocomplete="off", maxlength="10")}}
+                                {{form.pointsDonating(class="form-control", type="number", value=500, min=1, autocomplete="off", maxlength="10")}}
                                 <div id="pointsDonateHelp" class="form-text">Fill in the amount of points you want to donate to your chosen skin.</div>
                             </div>
                             <div class="mb-2">
