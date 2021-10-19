@@ -13,7 +13,10 @@ Then setup `config.json` inside the `srb2kartwebsite` folder. There's an example
 
 When ready, launch the code as follows in a testing environment:
 ```
-srb2kart-website> python srb2kartwebsite/kartsite.py
+srb2kartwebsite> python kartsite.py
 ```
-
-If you want to run this app in a production environment (so something less testy and more realy) take a look at hosting this app through a WSGI interface. The Flask documentation gives enough examples to get started.
+In production, use gunicorn instead:
+```
+python3 -m gunicorn --bind 0.0.0.0:5000 wsgi:app
+```
+Gunicorn is a WSGI interface which is meant to serve the site in a more stable and efficient way than the flask development server is able to (supposedly).
