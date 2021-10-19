@@ -19,8 +19,8 @@ from forms import SkinShopForm
 app = Flask(__name__)
 
 # load config from JSON
-if os.path.exists("srb2kartwebsite/config.json"):
-    with open("srb2kartwebsite/config.json", "r") as configFile:
+if os.path.exists("config.json"):
+    with open("config.json", "r") as configFile:
         jsonData = json.load(configFile)
     configFile.close()
 
