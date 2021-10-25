@@ -134,7 +134,7 @@ def reservePoints(form, skinData, userName, reservedPoints):
     reservedPoints["files"][skinFile]['totalPoints'] = reservedPoints["files"][skinFile]['totalPoints'] + int(form.pointsDonating.data)
     
     # and add the points to the skinPoints dict
-    reservedPoints["skinPoints"][str(form.skinsRadio.data).replace("_", " ")] = reservedPoints["files"][skinFile]['totalPoints']
+    reservedPoints["skinPoints"][form.skinsRadio.data] = reservedPoints["files"][skinFile]['totalPoints']
 
     # write the data to disk
     with open(pointsFile, "w") as file:
