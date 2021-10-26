@@ -311,6 +311,10 @@ def skinshop():
             print("[Form error] User donated too much points")
             errorMessage = f"You do not have {form.pointsDonating.data} points available on {form.chosenServer.data}. Check the amount you're donating and/or select the correct server."
             successMessage = None
+        elif form.pointsDonating.data <= 0:
+            print(f"[Form error] User donated a bad amount of points ({form.pointsDonating.data})")
+            errorMessage = f"You can't donate {form.pointsDonating.data} points."
+            successMessage = None
         else:
             errorMessage = None
             validRequest = True
