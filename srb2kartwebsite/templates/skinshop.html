@@ -180,7 +180,7 @@
 
             {% macro get_charimgurl(name) -%}
                 {% if name != 'no skins found' %}
-                    <img src="{{ url_for('static', filename='charwants/{}.png'.format(name)) }}" height="48px" />
+                    <img src="{{ url_for('static', filename='charwants/{}.png'.format(name.lower())) }}" height="48px" />
                 {% else %}
                     <img src="{{ url_for('static', filename='images/pibardy.png') }}" height="48px" />
                 {% endif %}
