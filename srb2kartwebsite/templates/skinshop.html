@@ -7,53 +7,63 @@
     <h1 class="text-center text-warning mt-3">Aqua's SRB2Kart Skin Shop</h1>
 
     <div class="container">
-        <h2 class="text-center text-warning">How it works</h2>
-        <div class="row mb-3">
-            <div class="col text-center text-warning">
-                <h4>Donating points</h4>
-                On this page you can donate points towards skins.<br>
-                The points you donate go towards a skin's file.<br><br>
+        <div id="accordionSkinShop">
+            <div>
+                <h2 class="text-center text-warning" id="headingOne">
+                    <button class="btn btn-warning justify-content-center w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        How it works
+                    </button>
+                </h2>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="row mb-3">
+                        <div class="col text-center text-warning">
+                            <h4>Donating points</h4>
+                            On this page you can donate points towards skins.<br>
+                            The points you donate go towards a skin's file.<br><br>
 
-                Every week at Monday 06.00 CET, the character randomizer is started.<br>
-                It takes 15 random characters that will be used on the Karthouse servers for the week.
-                The randomizer will look at the top 5 skins with the most points donated towards them,<br>
-                and reserve slots for those skins. It then fills the remaining slots with random skins.<br><br>
+                            Every week at Monday 06.00 CET, the character randomizer is started.<br>
+                            It takes 15 random characters that will be used on the Karthouse servers for the week.
+                            The randomizer will look at the top 5 skins with the most points donated towards them,<br>
+                            and reserve slots for those skins. It then fills the remaining slots with random skins.<br><br>
 
-                <b>Skins need at least {{skinShopPointsRequired}} points to get a reserved slot in the randomizer.</b><br><br>
+                            <b>Skins need at least {{skinShopPointsRequired}} points to get a reserved slot in the randomizer.</b><br><br>
 
-                Your points will be changed when the randomizer has run, and<br>
-                you donated towards a skin that met the {{skinShopPointsRequired}} points quota.
+                            Your points will be changed when the randomizer has run, and<br>
+                            you donated towards a skin that met the {{skinShopPointsRequired}} points quota.
 
-                <hr>
+                            <hr>
 
-                <h4>Legend</h4>
-                <span class="text-center fs-6">TOTAL:</span> total amount of points on this server<br>
-                <span class="text-center fs-6">RESERVE:</span> points already donated towards skins from this server<br>
-                <span class="text-center fs-6">SPEND:</span> points available for spending from this server<br><br>
-                
-                <h4>Button colors</h4>
-                <span class="text-center fs-6">Orange:</span> skin has no points<br>
-                <span class="text-center fs-6">Blue:</span> skin has points donated by others<br>
-                <span class="text-center fs-6">Teal:</span> skin has points donated by you (and possibly others)<br>
-            </div>
-            <div class="col text-center text-warning">
-                <h4>Gaining points</h4>
-                You gain points by playing SRB2Kart on the Aqua's Karthouse servers.<br>
-                The points you score ingame are saved and become available for use on this page.<br><br>
+                            <h4>Legend</h4>
+                            <span class="text-center fs-6">TOTAL:</span> total amount of points on this server<br>
+                            <span class="text-center fs-6">RESERVE:</span> points already donated towards skins from this server<br>
+                            <span class="text-center fs-6">SPEND:</span> points available for spending from this server<br><br>
+                            
+                            <h4>Button colors</h4>
+                            <span class="text-center fs-6">Orange:</span> skin has no points<br>
+                            <span class="text-center fs-6">Blue:</span> skin has points donated by others<br>
+                            <span class="text-center fs-6">Teal:</span> skin has points donated by you (and possibly others)<br>
+                        </div>
+                        <div class="col text-center text-warning">
+                            <h4>Gaining points</h4>
+                            You gain points by playing SRB2Kart on the Aqua's Karthouse servers.<br>
+                            The points you score ingame are saved and become available for use on this page.<br><br>
 
-                Have more points than shown on this page? Suddenly lost points?<br>
-                Notify Aqua so he can take a look.
-                <hr>
-                <h4>Using the shop</h4>
-                Fill in the amount of points you'd like to donate and<br>
-                choose the server you want the points to be donated from.<br>
-                Click the skin you want to donate points to, and click the Donate button.<br>
-                You will get a message indicating the result of your donation.<br>
-                Remember: a skin needs at least {{skinShopPointsRequired}} points to get a reserved slot in the randomizer.
-                <hr>
-                <h4>Need more help?</h4>
-                Join the Aqua's Karthouse Discord to get help or ask questions:<br><br>
-                <a href="https://discord.gg/8XXXwZk"><img src="https://discordapp.com/api/guilds/718834285989199894/widget.png?style=banner3" alt="Discord invite"></a>
+                            Have more points than shown on this page? Suddenly lost points?<br>
+                            Notify Aqua so he can take a look.
+                            <hr>
+                            <h4>Using the shop</h4>
+                            Fill in the amount of points you'd like to donate and<br>
+                            choose the server you want the points to be donated from.<br>
+                            Click the skin you want to donate points to, and click the Donate button.<br>
+                            You will get a message indicating the result of your donation.<br>
+                            Remember: a skin needs at least {{skinShopPointsRequired}} points to get a reserved slot in the randomizer.
+                            <hr>
+                            <h4>Need more help?</h4>
+                            Join the Aqua's Karthouse Discord to get help or ask questions:<br><br>
+                            <a href="https://discord.gg/8XXXwZk"><img src="https://discordapp.com/api/guilds/718834285989199894/widget.png?style=banner3" alt="Discord invite"></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
