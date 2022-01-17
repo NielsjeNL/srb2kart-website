@@ -33,6 +33,7 @@ if os.path.exists("config.json"):
 
     kartUsersFile = jsonData["kartUsersFile"]
     skinInfoFile = jsonData["skinInfoFile"]
+    skinShopPointsRequired = jsonData["skinShopPointsRequired"]
     pointsFile = jsonData["pointsFile"]
     transactionLog = jsonData["transactionLog"]
 else:
@@ -381,6 +382,7 @@ def skinshop():
         playerScore=playerScore,
         scoreBuffer=scoreBuffer,
         reservedPoints=reservedPoints,
+        skinShopPointsRequired=skinShopPointsRequired,
         skinData=skinData,
         errorMessage=errorMessage,
         successMessage=successMessage,

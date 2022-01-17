@@ -19,10 +19,10 @@
                 The randomizer will look at the top 5 skins with the most points donated towards them,<br>
                 and reserve slots for those skins. It then fills the remaining slots with random skins.<br><br>
 
-                <b>Skins need at least 500 points to get a reserved slot in the randomizer.</b><br><br>
+                <b>Skins need at least {{skinShopPointsRequired}} points to get a reserved slot in the randomizer.</b><br><br>
 
                 Your points will be changed when the randomizer has run, and<br>
-                you donated towards a skin that met the 500 points quota.
+                you donated towards a skin that met the {{skinShopPointsRequired}} points quota.
 
                 <hr>
 
@@ -49,7 +49,7 @@
                 choose the server you want the points to be donated from.<br>
                 Click the skin you want to donate points to, and click the Donate button.<br>
                 You will get a message indicating the result of your donation.<br>
-                Remember: a skin needs at least 500 points to get a reserved slot in the randomizer.
+                Remember: a skin needs at least {{skinShopPointsRequired}} points to get a reserved slot in the randomizer.
                 <hr>
                 <h4>Need more help?</h4>
                 Join the Aqua's Karthouse Discord to get help or ask questions:<br><br>
@@ -122,7 +122,7 @@
                             <div class="mb-2">
                                 {{ form.csrf_token() }}
                                 <label for="pointsDonating" class="form-label">Amount of points to donate</label>
-                                {{form.pointsDonating(class="form-control", type="number", value=500, min=1, autocomplete="off", maxlength="10")}}
+                                {{form.pointsDonating(class="form-control", type="number", value=skinShopPointsRequired, min=1, autocomplete="off", maxlength="10")}}
                                 <div id="pointsDonateHelp" class="form-text">Fill in the amount of points you want to donate to your chosen skin.</div>
                             </div>
                             <div class="mb-2">
@@ -160,7 +160,7 @@
                         <div class="text-center">
                         {% if sortedSkins|length != 0 %}
                             {% for skin, points in sortedSkins[:5] %}
-                            {% if points < 500 %}
+                            {% if points < skinShopPointsRequired %}
                                 <span class="text-danger">
                             {% else %}
                                 <span>

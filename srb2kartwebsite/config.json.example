@@ -3,6 +3,7 @@
     "secretKey": "enter a random secret key here. it can be anything",
     "kartUsersFile": "srb2kartwebsite\\kartusers.json",
     "skinInfoFile": "srb2kartwebsite\\skininfo.json",
+    "skinShopPointsRequired": 500,
     "pointsFile": "srb2kartwebsite\\reservedPoints.json",
     "transactionLog": "srb2kartwebsite\\transactionlog.txt",
     "scoreLocations": {
