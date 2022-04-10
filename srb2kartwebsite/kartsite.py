@@ -34,6 +34,7 @@ if os.path.exists("config.json"):
     kartUsersFile = jsonData["kartUsersFile"]
     skinInfoFile = jsonData["skinInfoFile"]
     skinShopPointsRequired = jsonData["skinShopPointsRequired"]
+    mapsFile = jsonData["mapsFile"]
     pointsFile = jsonData["pointsFile"]
     transactionLog = jsonData["transactionLog"]
 else:
@@ -211,6 +212,38 @@ def home():
     
     return render_template("home.html",
         discordUser=discordUser, 
+    )
+
+@app.route("/maps/")
+def maps():
+    
+    try:
+        # get data from the discord user
+        if discord.authorized:
+            discordUser = discord.fetch_user()
+        else:
+            # create a user with blank data
+            class blankUser:
+                name = "Log in"
+                id = 0
+                avatar_url = None
+                discriminator = ''
+            discordUser = blankUser
+
+    except:
+        return redirect(url_for("logout"))
+    
+    # get data from maps json
+    if os.path.exists(mapsFile):
+        with open (mapsFile, "r") as mapFile:
+            mapData = json.load(mapFile)
+    else:
+        print("[Map info] No map info file exists.")
+        mapData = {}
+
+    return render_template("maps.html",
+        discordUser=discordUser,
+        mapData=mapData
     )
 
 @app.route("/skinshop/", methods=["GET", "POST"])

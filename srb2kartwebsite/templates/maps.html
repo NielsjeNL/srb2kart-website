@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Maplist{% endblock %}
+
+{% block content %}
+
+    <h1 class="text-center text-warning mt-3">Maps on the SRB2Kart servers</h1>
+
+    <div class="col text-center text-warning">
+        <p>
+            This page displays the maps that are being used on the SRB2Kart servers.
+        </p>
+    </div>
+    
+    <hr style="border-top: 10px solid #F7C12F; opacity: 1;">
+
+    {% if mapData|length != 0 %}
+        {% for pack in mapData %}
+            <div class="container text-center">
+                <h3 class="text-warning">
+                    {{pack}}
+                </h3>
+                <table class="table table-sm table-dark table-hover text-warning">
+                    <thead>
+                        <tr>
+                            <th>Thumbnail</th>
+                            <th>Map name</th>
+                            <th>Map ID</th>
+                            <th>Type</th>
+                            <th># Laps</th>
+                            <th>Hidden</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                    {% for map in mapData[pack] %}
+                        <tr>
+                            <td><img src="https://srb2kart-new.aqua.fyi/static/images/maps/MAP{{mapData[pack][map]['mapID']}}P.png"></td>
+                            <td>{{mapData[pack][map]["LEVELNAME"]}} {{mapData[pack][map]["ZONETITLE"]}}</td>
+                            <td>{{mapData[pack][map]["mapID"]}}</td>
+                            {% if mapData[pack][map]["TYPEOFLEVEL"].upper() == "RACE" %}
+                                <td>Race</td>
+                            {% elif mapData[pack][map]["TYPEOFLEVEL"].upper() == "BATTLE" or mapData[pack][map]["TYPEOFLEVEL"].upper() == "MATCH" %}
+                                <td>Battle</td>
+                            {% elif mapData[pack][map]["TYPEOFLEVEL"].upper() == "RACE,BATTLE" %}
+                                <td>Race + Battle</td>
+                            {% else %}
+                                <td>???</td>
+                            {% endif %}
+
+                            {% if mapData[pack][map]["TYPEOFLEVEL"].upper() == "RACE" %}
+                                <td>{{mapData[pack][map]["NUMLAPS"]}}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            {% if mapData[pack][map]["HIDDEN"] == "TRUE" %}
+                                <td>Yes</td>
+                            {% else %}
+                                <td>Nope</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+        {% else %}
+            <p>No maps are available.</p>
+        {% endif %}
+
+    <div class="container">
+    </div>
+
+    <style>
+        input[type="radio"]{
+            float: left;
+            margin-left: -0.5em;
+
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            background-color: inherit;
+            border-color: inherit;
+            border-style: solid;
+            border-width: thin;
+            border-radius: .25rem;
+            
+            width: 15px;
+            height: 15px;
+        }
+        input[type="radio"]:hover{
+            background-color: inherit;
+            border-color: black;
+            border-style: solid;
+        }
+        input[type="radio"]:checked{
+            background-color: #F7C12F;
+            border-color: black;
+            border-style: solid;
+            width: 15px;
+            height: 15px;
+        }
+
+        .alert-donated {
+            color: black;
+            background-color: #F7C12F;
+            border-color: #F7C12F;
+        }
+        img.skinimage {
+            margin-left: -0.5em;
+        }
+
+        span.fs-3 {
+            font-family: RaceSport
+        }
+        span.text-center.fs-4 {
+            font-family: RaceSport
+        }
+        span.text-center.fs-5 {
+            font-family: RaceSport
+        }
+        span.text-center.fs-6 {
+            font-family: RaceSport
+        }
+        h1{
+            text-decoration: underline;
+        }
+        h2 {
+            font-family: RaceSport;
+            text-decoration: underline;
+        }
+        h3 {
+            font-family: RaceSport;
+            text-decoration: underline;
+        }
+        h4 {
+            font-family: RaceSport;
+        }
+
+        label.btn ~ input[type=radio]:checked {
+            background-color: #e6e6e6;
+            border-color: #adadad;
+            color: #333;
+        }
+
+        .btn-outline-donated {
+            color: #01ff89;;
+            border-color: #01ff89;
+        }
+        .btn-outline-donated:hover {
+            color: #000;
+            background-color: #01ff89;
+            border-color: #01ff89;
+        }
+
+    </style>
+</form>
+
+{% endblock %}
