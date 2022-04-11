@@ -47,14 +47,18 @@
                 <table class="table table-sm table-dark table-hover text-warning">
                     <thead>
                         <tr>
+                            <th>Custom SOCs</th>
                             <th>Moved to SP</th>
-                            <th>Hidden status changed</th>
+                            <th>Hidden value changed</th>
+                            <th>Default laps changed</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
                         <tr>
+                            <td>{{mapData["customSOCs"]|length}}</td>
                             <td>{{mapData["customSingleplayerMaps"]}}</td>
                             <td>{{mapData["customHiddenMaps"]}}</td>
+                            <td>{{mapData["customLaps"]}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -168,7 +172,7 @@
                             {% endif %}
 
                             {% if map in mapData["customSOCs"] %}
-                                <td>Yes</td>
+                                <td style="border-left: solid;">Yes</td>
                             {% else %}
                                 <td>-</td>
                             {% endif %}
