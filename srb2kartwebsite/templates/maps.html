@@ -15,6 +15,7 @@
             Some maps overwrite each other. This can mean a map has a wrong thumbnail: the other info will be correct.<br>
             <br>
             <b>Records</b> are taken from K1 (<code>IP: aqua.fyi:5029</code>). The top 3 records are shown.<br>
+            Maps that share a map ID (so overwrite each other) will have a single record for both maps.<br>
             <br>
             <b>Rank</b> is the average value of the amount of <b>++</b> and <b>--</b> votes a map has received.<br>
             The higher the percentage, the more people like it. Take these votes with a grain of salt.
@@ -22,6 +23,40 @@
     </div>
     
     <hr style="border-top: 10px solid #F7C12F; opacity: 1;">
+
+    <!-- Macro's -->
+    {% macro get_bool(input) -%}
+        {% if input.upper() == "TRUE" %}
+            Yes
+        {% else %}
+            No
+        {% endif %}
+    {%- endmacro %}
+
+    {% macro get_rank(mapID) -%}
+        {% if mapData["ranks"][mapID.upper()] | length == 0 %}
+            -
+        {% else %}
+            {{mapData["ranks"][mapID.upper()]["players"]|length}} votes<br>
+            {{mapData["ranks"][mapID.upper()]["average"]}}%
+        {% endif %}
+    {%- endmacro %}
+
+    {% macro get_record(player, place) %}
+        {% if player in mapData["players"] %}
+            {% if place == 0 %}
+                {{mapData["players"][player][0]}}
+            {% elif place == 1 %}
+                {{mapData["players"][player][1]}}
+            {% elif place == 2 %}
+                {{mapData["players"][player][2]}}
+            {% elif place == 3 %}
+                {{mapData["players"][player][3]}}
+            {% endif %}
+        {% else %}
+            -
+        {% endif %}
+    {%- endmacro %}
 
     <div class="container text-center">
         <div class="row justify-content-md-center">
@@ -67,6 +102,26 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <h4 class="text-warning"">Leaderboards</h4>
+                <table class="table table-sm table-dark table-hover text-warning">
+                    <thead>
+                        <tr>
+                            <th># Records</th>
+                            <th>#1 Records</th>
+                            <th>#2 Records</th>
+                            <th>#3 Records</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        <tr>
+                            <td>{{get_record(userName, 3)}}</td>
+                            <td>{{get_record(userName, 0)}}</td>
+                            <td>{{get_record(userName, 1)}}</td>
+                            <td>{{get_record(userName, 2)}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>  
     </div>
@@ -103,14 +158,20 @@
                             <td style="border-right: solid;">
                                 <table class="table table-sm table-dark table-hover text-warning align-middle" style="border-style: hidden; margin-bottom: 0px;">
                                     {% for record in (mapData["leaderboard"][map.upper()])[:3] %}
-                                    <tr>
-                                        {% if record[1]|length >= 12 %}
+                                        {% if record[1] == userName %}
+                                            <tr style="color: #65f777;">
+                                        {% else %}   
+                                            <tr>
+                                        {% endif %}
+
+                                        {% if record[1]|length > 10 %}
                                             <td style="text-align: right; width: 110px; font-family: monospace"><marquee>{{record[1]}}</marquee></td>
                                         {% else %}
                                             <td style="text-align: right; width: 110px; font-family: monospace">{{record[1]}}</td>
                                         {% endif %}
                                         <td class="recordtime">{{record[7]}}</td>
-                                        <td style="text-align: right; width: 30px; border-left: solid;"><span class="record">{{loop.index}}</span></td>
+                                        <td style="text-align: right; width: 20px; border-left: solid;"><span class="record">{{loop.index}}</span></td>
+                                        </tr>
                                     </tr>
                                     {% endfor %}
                                 </table>
@@ -166,23 +227,6 @@
                             {% else %}
                                 <td>-</td>
                             {% endif %}
-
-                            {% macro get_bool(input) -%}
-                                {% if input.upper() == "TRUE" %}
-                                    Yes
-                                {% else %}
-                                    No
-                                {% endif %}
-                            {%- endmacro %}
-
-                            {% macro get_rank(mapID) -%}
-                                {% if mapData["ranks"]["MAP"+map.upper()] | length == 0 %}
-                                    -
-                                {% else %}
-                                    {{mapData["ranks"]["MAP"+map.upper()]["players"]|length}} votes<br>
-                                    {{mapData["ranks"]["MAP"+map.upper()]["average"]}}%
-                                {% endif %}
-                            {%- endmacro %}
 
                             {% if mapData["packs"][pack][map]["HIDDEN"].upper() == "TRUE" %}
                                 {% if map in mapData["customSOCs"] and mapData["packs"][pack][map]["HIDDEN"].upper() != mapData["customSOCs"][map]["HIDDEN"].upper() %}
@@ -280,7 +324,7 @@
 
         .recordtime {
             text-align: right; 
-            width: 100px; 
+            width: 90px; 
             font-family: monospace; 
             padding-right: 8px!important;
         }

@@ -232,6 +232,29 @@ def maps():
 
     except:
         return redirect(url_for("logout"))
+
+    # retrieve user bindings
+    if os.path.exists(kartUsersFile) and discord.authorized:
+        with open(kartUsersFile, "rt") as kartUsersData:
+            try:
+                kartUsers = json.load(kartUsersData)
+            except:
+                print("Couldn't load kart users file. Does it have data and is the syntax correct?")
+                userName = None
+
+        kartUsersData.close()
+
+        if str(discordUser.id) in kartUsers['kartUsers']:
+            print(f"[Discord <> Kart bind] Matched {discordUser.name} to {kartUsers['kartUsers'][str(discordUser.id)]['playerName']}")
+            userName = kartUsers['kartUsers'][str(discordUser.id)]['playerName']
+        else:
+            print(f"[Discord <> Kart bind] Could not match {discordUser.name}. Using empty data for profile")
+            userName = None
+    elif not os.path.exists(kartUsersFile):
+        print("[Discord <> Kart bind] No kart users file exists. Unable to match any users.")
+        userName = None
+    elif not discord.authorized:
+        userName = None
     
     # get data from maps json
     if os.path.exists(mapsFile):
@@ -243,7 +266,8 @@ def maps():
 
     return render_template("maps.html",
         discordUser=discordUser,
-        mapData=mapData
+        mapData=mapData,
+        userName = userName
     )
 
 @app.route("/skinshop/", methods=["GET", "POST"])
@@ -265,7 +289,7 @@ def skinshop():
             discriminator = ''
         discordUser = blankUser
 
-    # retrieve scores and match the user
+    # retrieve user bindings
     if os.path.exists(kartUsersFile):
         with open(kartUsersFile, "rt") as kartUsersData:
             try:
