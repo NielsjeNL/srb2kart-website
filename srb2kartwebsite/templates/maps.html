@@ -12,7 +12,12 @@
             It also shows which maps have been defined in a custom SOC.<br>
             Values that appear as striked through are the map's original values: the value below them is the custom value we use.<br>
             <br>
-            Some maps overwrite each other. This can mean a map has a wrong thumbnail: the other info will be correct.
+            Some maps overwrite each other. This can mean a map has a wrong thumbnail: the other info will be correct.<br>
+            <br>
+            <b>Records</b> are taken from K1 (<code>IP: aqua.fyi:5032</code>). The top 3 records are shown.<br>
+            <br>
+            <b>Rank</b> is the average value of the amount of <b>++</b> and <b>--</b> votes a map has received.<br>
+            The higher the percentage, the more people like it. Take these votes with a grain of salt.
         </p>
     </div>
     
@@ -70,7 +75,7 @@
 
     <div class="container text-center">
         <div class="row justify-content-md-center">
-            <div class="col col-lg-8">
+            <div class="col col-lg-10">
     {% if mapData|length != 0 %}
         {% for pack in mapData["packs"] %}
                 <h4 class="text-warning">
@@ -79,6 +84,7 @@
                 <table class="table table-sm table-dark table-hover text-warning">
                     <thead>
                         <tr>
+                            <th>Records</th>
                             <th>Thumbnail</th>
                             <th>Map name</th>
                             <th>Map ID</th>
@@ -86,12 +92,34 @@
                             <th># Laps</th>
                             <th>Hidden</th>
                             <th>Custom SOC</th>
+                            <th>Rank</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
                     {% for map in mapData["packs"][pack] %}
                         <tr>
-                            <td><img src="https://srb2kart-new.aqua.fyi/static/images/maps/MAP{{mapData["packs"][pack][map]['mapID']}}P.png"></td>
+                            <!-- Records -->
+                            {% if map.upper() in mapData["leaderboard"] %}
+                            <td style="border-right: solid;">
+                                <table class="table table-sm table-dark table-hover text-warning align-middle" style="border-style: hidden; margin-bottom: 0px;">
+                                    {% for record in (mapData["leaderboard"][map.upper()])[:3] %}
+                                    <tr>
+                                        {% if record[1]|length >= 12 %}
+                                            <td style="text-align: right; width: 110px; font-family: monospace"><marquee>{{record[1]}}</marquee></td>
+                                        {% else %}
+                                            <td style="text-align: right; width: 110px; font-family: monospace">{{record[1]}}</td>
+                                        {% endif %}
+                                        <td class="recordtime">{{record[7]}}</td>
+                                        <td style="text-align: right; width: 30px; border-left: solid;"><span class="record">{{loop.index}}</span></td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </td>
+                            {% else %}
+                                <td style="border-right: solid;">-</td>
+                            {% endif %}
+
+                            <td><img src="https://srb2kart-new.aqua.fyi/static/images/maps/MAP{{mapData['packs'][pack][map]['mapID']}}P.png"></td>
                             <td>{{mapData["packs"][pack][map]["LEVELNAME"]}} {{mapData["packs"][pack][map]["ZONETITLE"]}}</td>
                             <td>{{mapData["packs"][pack][map]["mapID"]}}</td>
 
@@ -147,6 +175,15 @@
                                 {% endif %}
                             {%- endmacro %}
 
+                            {% macro get_rank(mapID) -%}
+                                {% if mapData["ranks"]["MAP"+map.upper()] | length == 0 %}
+                                    -
+                                {% else %}
+                                    {{mapData["ranks"]["MAP"+map.upper()]["players"]|length}} votes<br>
+                                    {{mapData["ranks"]["MAP"+map.upper()]["average"]}}%
+                                {% endif %}
+                            {%- endmacro %}
+
                             {% if mapData["packs"][pack][map]["HIDDEN"].upper() == "TRUE" %}
                                 {% if map in mapData["customSOCs"] and mapData["packs"][pack][map]["HIDDEN"].upper() != mapData["customSOCs"][map]["HIDDEN"].upper() %}
                                     <td>
@@ -172,10 +209,17 @@
                             {% endif %}
 
                             {% if map in mapData["customSOCs"] %}
-                                <td style="border-left: solid;">Yes</td>
+                                <td style="border-left: solid; border-right: solid;">Yes</td>
+                            {% else %}
+                                <td style="border-right: solid">-</td>
+                            {% endif %}
+
+                            {% if "MAP"+map.upper() in mapData["ranks"] %}
+                                <td>{{get_rank("MAP"+map.upper())}}</td>
                             {% else %}
                                 <td>-</td>
                             {% endif %}
+
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -228,6 +272,17 @@
         }
         img.skinimage {
             margin-left: -0.5em;
+        }
+
+        .record {
+            font-family: RaceSport;
+        }
+
+        .recordtime {
+            text-align: right; 
+            width: 100px; 
+            font-family: monospace; 
+            padding-right: 8px!important;
         }
 
         span.fs-3 {
