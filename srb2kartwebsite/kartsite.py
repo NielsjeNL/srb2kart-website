@@ -15,8 +15,11 @@ from flask_discord import DiscordOAuth2Session, Unauthorized
 
 from forms import SkinShopForm
 
-# set up flask app
+from cachetools import cached, TTLCache
+
+# set up flask app and cache
 app = Flask(__name__)
+cache = TTLCache(maxsize = 100, ttl = 300)
 
 # load config from JSON
 if os.path.exists("config.json"):
@@ -214,6 +217,44 @@ def home():
         discordUser=discordUser, 
     )
 
+@cached(cache)
+def getMapData():
+    # get data from maps json
+    print("[getMapData] Reading map data from", mapsFile)
+
+    if os.path.exists(mapsFile):
+        with open (mapsFile, "r") as mapFile:
+            mapData = json.load(mapFile)
+    else:
+        print("[Map info] No map info file exists.")
+        mapData = {}
+
+    # count amount of ranks
+    totalVotes = 0
+    plusVotes = 0
+    minVotes = 0
+
+    for map in mapData['ranks'].items():
+        mapData['ranks'][map[0]]['numvotes'] = len(map[1]['players'])
+        totalVotes += len(map[1]['players'])
+        
+        for player, vote in map[1]['players'].items():
+            if vote == 1:
+                plusVotes += 1
+            elif vote == 0:
+                minVotes += 1
+    mapData['ranks']['totalVotes'] = totalVotes
+    mapData['ranks']['plusVotes']  = plusVotes
+    mapData['ranks']['minVotes']   = minVotes
+
+    # get total records
+    totalRecords = 0
+    for player in mapData['players'].items():
+        totalRecords += player[1][3]
+    mapData['totalRecords'] = totalRecords
+
+    return mapData
+
 @app.route("/maps/")
 def maps():
     
@@ -255,14 +296,9 @@ def maps():
         userName = None
     elif not discord.authorized:
         userName = None
-    
-    # get data from maps json
-    if os.path.exists(mapsFile):
-        with open (mapsFile, "r") as mapFile:
-            mapData = json.load(mapFile)
-    else:
-        print("[Map info] No map info file exists.")
-        mapData = {}
+
+    # get map data
+    mapData = getMapData()
 
     return render_template("maps.html",
         discordUser=discordUser,
