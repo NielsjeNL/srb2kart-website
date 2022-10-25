@@ -168,6 +168,7 @@
                             <th>Hidden</th>
                             <th>Custom SOC</th>
                             <th style="width: 80px;">Rank</th>
+                            <th>Plays</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
@@ -183,14 +184,15 @@
                                         {% else %}   
                                             <tr>
                                         {% endif %}
-
+                                        
+                                        <td style="text-align: right; width: 20px; border-right: solid; padding-right: 8px;"><span class="record">{{loop.index}}</span></td>
+                                        
                                         {% if record[1]|length > 10 %}
-                                            <td style="text-align: right; width: 110px; font-family: monospace"><marquee>{{record[1]}}</marquee></td>
+                                            <td class="table-record-player"><marquee>{{record[1]}}</marquee></td>
                                         {% else %}
-                                            <td style="text-align: right; width: 110px; font-family: monospace">{{record[1]}}</td>
+                                            <td class="table-record-player">{{record[1]}}</td>
                                         {% endif %}
                                         <td class="recordtime">{{record[8]}}</td>
-                                        <td style="text-align: right; width: 20px; border-left: solid;"><span class="record">{{loop.index}}</span></td>
                                         </tr>
                                     </tr>
                                     {% endfor %}
@@ -282,6 +284,13 @@
                                 <td>{{get_rank("MAP"+map.upper())}}</td>
                             {% else %}
                                 <td>-</td>
+                            {% endif %}
+
+                            {% if map.upper() in mapData["statTrackerMapData"] %}
+                                <td class="table-plays">🏁: {{mapData["statTrackerMapData"][map.upper()]['finishes']}}<br>
+                                    ⏭️: {{mapData["statTrackerMapData"][map.upper()]['rtv']}}</td>
+                            {% else %}
+                                <td class="table-plays">-</td>
                             {% endif %}
 
                         </tr>
@@ -387,6 +396,22 @@
             color: #000;
             background-color: #01ff89;
             border-color: #01ff89;
+        }
+
+        .table-record-player {
+            text-align: right;
+            width: 110px;
+            font-family: monospace;
+            border-right: solid;
+            border-right-color: #A98626;
+            border-right-width: thin;
+        }
+
+        .table-plays {
+            border-left: solid;
+            border-left-color: #A98626;
+            border-left-width: thin;
+            min-width: 55px;
         }
 
     </style>
