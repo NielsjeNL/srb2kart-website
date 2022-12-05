@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Maplist{% endblock %}
+{% block title %}Map list{% endblock %}
 
 {% block content %}
 
@@ -9,8 +9,8 @@
     <div class="col text-center text-warning">
         <p>
             This page displays the maps that are being used on the SRB2Kart servers.<br>
-            It also shows which maps have been defined in a custom SOC.<br>
-            Values that appear as striked through are the map's original values: the value below them is the custom value we use.<br>
+            It also shows which maps have been changed with a custom SOC.<br>
+            Values that are <strike>striked through</strike> are original values: the value below them is the custom value we use.<br>
             <br>
             Some maps overwrite each other. This can mean a map has a wrong thumbnail: the other info will be correct.<br>
             <br>
@@ -19,6 +19,9 @@
             <br>
             <b>Rank</b> is the average value of the amount of <b>++</b> and <b>--</b> votes a map has received.<br>
             The higher the percentage, the more people like it. Take these votes with a grain of salt.<br>
+            <br>
+            For <b>Plays</b>, 🏁 means how often the map finished<br>
+            while ⏭️ means how often the map was skipped (through RTV or else).<br>
             <br>
             Data last updated at <b>{{mapData['currTime']}}</b>
         </p>
@@ -202,7 +205,7 @@
                                 <td style="border-right: solid;">-</td>
                             {% endif %}
 
-                            <td><img src="https://srb2kart-new.aqua.fyi/static/images/maps/MAP{{mapData['packs'][pack][map]['mapID']}}P.png"></td>
+                            <td><img src="https://srb2kart.aqua.fyi/static/images/maps/MAP{{mapData['packs'][pack][map]['mapID']}}P.png"></td>
                             <td>{{mapData["packs"][pack][map]["LEVELNAME"]}} {{mapData["packs"][pack][map]["ZONETITLE"]}}</td>
                             <td>{{mapData["packs"][pack][map]["mapID"]}}</td>
 
