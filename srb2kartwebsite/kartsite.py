@@ -484,6 +484,29 @@ def skinshop():
         )
     # FR: add search
 
+@app.route("/krac/")
+def krac():
+    
+    try:
+        # get data from the discord user
+        if discord.authorized:
+            discordUser = discord.fetch_user()
+        else:
+            # create a user with blank data
+            class blankUser:
+                name = "Log in"
+                id = 0
+                avatar_url = None
+                discriminator = ''
+            discordUser = blankUser
+
+    except:
+        return redirect(url_for("logout"))
+    
+    return render_template("krac.html",
+        discordUser=discordUser, 
+    )
+
 if __name__ == "__main__":
     #app.run(host='0.0.0.0', debug=True)
     #app.run(host='0.0.0.0', port=28962, debug=True)
