@@ -13,7 +13,7 @@
     "discord": {
         "clientID": 0,
         "clientSecret": "insert the client secret here",
-        "redirectURI": "insert redirect URI here (also specify it in discord developer portal!",
+        "redirectURI": "insert redirect URI here (also specify it in discord developer portal!)",
         "botToken": "optional bot token. not currently in use"
     }
 }
