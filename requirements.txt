@@ -4,3 +4,4 @@ requests_oauthlib
 cachetools
 discord.py
 gunicorn
+WTForms==2.3.3
