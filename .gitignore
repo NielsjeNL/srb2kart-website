@@ -130,7 +130,9 @@ dmypy.json
 
 # Custom test files
 tests/
-*.json
+.vscode/
+srb2kartwebsite/*.json
+config.json
 
 # Ignore stuff from the skin shop
 transactionlog.txt

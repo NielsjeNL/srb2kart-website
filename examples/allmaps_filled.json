@@ -1,0 +1,261 @@
+{
+    "packs": {
+        "KR_CookieCountry_v1.5.pk3": {
+            "WY": {
+                "mapID": "WY",
+                "LEVELNAME": "Cookie Country",
+                "SUBTITLE": "InstableTracks: 1",
+                "NOZONE": "true",
+                "MUSIC": "RTDLCC",
+                "TYPEOFLEVEL": "RACE",
+                "NEXTLEVEL": "01",
+                "RECORDATTACK": "true",
+                "NOVISITNEEDED": "true",
+                "NUMLAPS": "3",
+                "SKYNUM": "91",
+                "SKYBOXSCALEZ": "0",
+                "HIDDEN": "FALSE"
+            }
+        },
+        "KRL_FrostBrush_RaceTracks-v1.1.pk3": {
+            "G3": {
+                "mapID": "G3",
+                "LEVELNAME": "Ice Paradise",
+                "SUBTITLE": "Advance 2 Cup 1",
+                "TYPEOFLEVEL": "Race",
+                "NUMLAPS": "2",
+                "RECORDATTACK": "True",
+                "SKYNUM": "1",
+                "WEATHER": "2",
+                "NEXTLEVEL": "1",
+                "LUA.FRICTIONFIX": "true",
+                "HIDDEN": "FALSE"
+            },
+            "G4": {
+                "mapID": "G4",
+                "LEVELNAME": "Hot Crater",
+                "SUBTITLE": "Advance 2 Cup 2",
+                "TYPEOFLEVEL": "Race",
+                "NUMLAPS": "3",
+                "SECTIONRACE": "True",
+                "RECORDATTACK": "True",
+                "SKYNUM": "1",
+                "NEXTLEVEL": "1",
+                "MOBJSCALE": "FRACUNIT*500/1000",
+                "LUA.FRICTIONFIX": "true",
+                "HIDDEN": "FALSE"
+            }
+        }
+    },
+    "customSOCs": {
+        "A5": {
+            "mapID": "A5",
+            "LEVELNAME": "MKSC Cheese Land",
+            "NOZONE": "1",
+            "SUBTITLE": "MARIO KART LEGACY",
+            "TYPEOFLEVEL": "Singleplayer",
+            "RECORDATTACK": "true",
+            "LEVELSELECT": "1",
+            "NOVISITNEEDED": "true",
+            "NUMLAPS": "3",
+            "SKYNUM": "31",
+            "SKYBOXSCALE": "24",
+            "MUSIC": "KMAPA5",
+            "LUA.ARCADETIME": "85",
+            "LUA.ARCADEBONUS": "40",
+            "MOBJSCALE": "FRACUNIT*100/90",
+            "HIDDEN": "FALSE"
+        },
+        "SU": {
+            "mapID": "SU",
+            "LEVELNAME": "Mushroom Kingdom",
+            "SUBTITLE": "Bowling Cup 1",
+            "TYPEOFLEVEL": "Singleplayer",
+            "RECORDATTACK": "True",
+            "NOVISITNEEDED": "True",
+            "NUMLAPS": "3",
+            "SKYNUM": "42",
+            "SKYBOXSCALE": "40",
+            "NOZONE": "1",
+            "MUSIC": "KMAPSU",
+            "NEXTLEVEL": "SV",
+            "LUA.ARCADETIME": "90",
+            "LUA.ARCADEBONUS": "50",
+            "MOBJSCALE": "FRACUNIT*100/94",
+            "HIDDEN": "FALSE"
+        },
+        "K6": {
+            "mapID": "K6",
+            "LEVELNAME": "Panic City",
+            "SUBTITLE": "Beetle cup 2",
+            "TYPEOFLEVEL": "Singleplayer",
+            "NUMLAPS": "3",
+            "SKYNUM": "70",
+            "MUSIC": "mapk6m",
+            "NEXTLEVEL": "k7",
+            "RECORDATTACK": "true",
+            "NOVISITNEEDED": "true",
+            "HIDDEN": "FALSE"
+        }
+    },
+    "ranks": {
+        "MAPAX": {
+            "average": 75,
+            "players": {
+                "Player 1": 1,
+                "Player 2": 1,
+                "Player 3": 0,
+                "Player 4": 1
+            }
+        },
+        "MAPW3": {
+            "average": 100,
+            "players": {
+                "Player 2": 1
+            }
+        },
+        "MAPK3": {
+            "average": 50,
+            "players": {
+                "Player 3": 0,
+                "Player 4": 1
+            }
+        },
+        "MAP23": {
+            "average": 0,
+            "players": {
+                "Player 1": 0
+            }
+        }
+    },
+    "totalPacks": 40,
+    "totalMaps": 332,
+    "raceMaps": 322,
+    "battleMaps": 9,
+    "hiddenMaps": 38,
+    "customRaceMaps": 0,
+    "customBattleMaps": 0,
+    "customSingleplayerMaps": 62,
+    "customHiddenMaps": 17,
+    "customLaps": 2,
+    "leaderboard": {
+        "01": [
+            [
+                "1",
+                "Player 1",
+                "doom",
+                "62",
+                "2754",
+                "929 1841",
+                "0",
+                "68\n",
+                "01:18.685"
+            ],
+            [
+                "1",
+                "Player 2",
+                "honey",
+                "29",
+                "2798",
+                "949 1867",
+                "0",
+                "45\n",
+                "01:19.942"
+            ],
+            [
+                "1",
+                "Player 3",
+                "silver",
+                "65",
+                "3219",
+                "1088 2151",
+                "0",
+                "34\n",
+                "01:31.971"
+            ]
+        ],
+        "02": [
+            [
+                "2",
+                "Player 2",
+                "honey",
+                "29",
+                "3897",
+                "1323 2611",
+                "0",
+                "45\n",
+                "01:51.342"
+            ],
+            [
+                "2",
+                "Player 1",
+                "berdly",
+                "83",
+                "4661",
+                "1582 3123",
+                "0",
+                "34\n",
+                "02:13.171"
+            ],
+            [
+                "2",
+                "Player 3",
+                "silver",
+                "65",
+                "4762",
+                "1704 3154",
+                "0",
+                "34\n",
+                "02:16.057"
+            ]
+        ],
+        "03": [
+            [
+                "3",
+                "Player 3",
+                "honey",
+                "29",
+                "4056",
+                "1361 2702",
+                "0",
+                "45\n",
+                "01:55.885"
+            ]
+        ]
+    },
+    "statTrackerMapData": {
+        "53": {
+            "finishes": 5,
+            "rtv": 2
+        },
+        "B0": {
+            "finishes": 0,
+            "rtv": 4
+        },
+        "63": {
+            "finishes": 4,
+            "rtv": 0
+        }
+    },
+    "players": {
+        "Player 1": [
+            75,
+            12,
+            0,
+            87
+        ],
+        "Player 2": [
+            117,
+            49,
+            11,
+            180
+        ],
+        "Player 3": [
+            3,
+            11,
+            16,
+            57
+        ]
+    },
+    "currTime": "2023-05-31 11:00:02"
+}
