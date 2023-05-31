@@ -234,24 +234,28 @@ def getMapData():
     plusVotes = 0
     minVotes = 0
 
-    for map in mapData['ranks'].items():
-        mapData['ranks'][map[0]]['numvotes'] = len(map[1]['players'])
-        totalVotes += len(map[1]['players'])
-        
-        for player, vote in map[1]['players'].items():
-            if vote == 1:
-                plusVotes += 1
-            elif vote == 0:
-                minVotes += 1
-    mapData['ranks']['totalVotes'] = totalVotes
-    mapData['ranks']['plusVotes']  = plusVotes
-    mapData['ranks']['minVotes']   = minVotes
+    if len(mapData) != 0:
+        for map in mapData['ranks'].items():
+            mapData['ranks'][map[0]]['numvotes'] = len(map[1]['players'])
+            totalVotes += len(map[1]['players'])
+            
+            for player, vote in map[1]['players'].items():
+                if vote == 1:
+                    plusVotes += 1
+                elif vote == 0:
+                    minVotes += 1
+        mapData['ranks']['totalVotes'] = totalVotes
+        mapData['ranks']['plusVotes']  = plusVotes
+        mapData['ranks']['minVotes']   = minVotes
 
-    # get total records
-    totalRecords = 0
-    for player in mapData['players'].items():
-        totalRecords += player[1][3]
-    mapData['totalRecords'] = totalRecords
+        # get total records
+        totalRecords = 0
+        for player in mapData['players'].items():
+            totalRecords += player[1][3]
+        mapData['totalRecords'] = totalRecords
+    else:
+        mapData['players'] = []
+        mapData['ranks'] = []
 
     return mapData
 
