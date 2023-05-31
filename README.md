@@ -41,9 +41,9 @@ The `examples` folder contains empty JSON files you can start filling yourself. 
 | `customSinglePlayerMaps` | Amount of custom SOCs that have `TypeOfLevel = Singleplayer` defined. |
 | `customHiddenMaps` | Amount of custom SOCs that have `Hidden = True` defined. |
 | `customLaps` | Amount of custom SOCs that change the default number of laps. |
-| `leaderboard` | A dict containing data from [!Not's Time Attack Leaderboard](https://mb.srb2.org/addons/time-attack-leaderboard.3742/). Every key in the dict is a map with it's value being a list of data from the leaderboard. |
-| `statTrackerMapData` | A dict containing data from [Onyo's StatTracker](https://mb.srb2.org/addons/stattracker.3992/). Every key in the dict is a map with it's values being how often a race finished and how often a race was RTV'd. |
-| `players` | A dict containing the amount of records a player has from the Time Attack Leaderboard. First value is the amount of first places, second value amount of second places, third value amount of third places and last value total amount of records. |
+| `leaderboard` | An optional dict containing data from [!Not's Time Attack Leaderboard](https://mb.srb2.org/addons/time-attack-leaderboard.3742/). Every key in the dict is a map with it's value being a list of data from the leaderboard. |
+| `statTrackerMapData` | An optional dict containing data from [Onyo's StatTracker](https://mb.srb2.org/addons/stattracker.3992/). Every key in the dict is a map with it's values being how often a race finished and how often a race was RTV'd. |
+| `players` | An optional dict containing the amount of records a player has from the Time Attack Leaderboard. First value is the amount of first places, second value amount of second places, third value amount of third places and last value total amount of records. |
 
 #### `kartusers.json`
 | **Key** | **Description** |
