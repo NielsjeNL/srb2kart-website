@@ -38,6 +38,7 @@ if os.path.exists("config.json"):
     skinInfoFile = jsonData["skinInfoFile"]
     skinShopPointsRequired = jsonData["skinShopPointsRequired"]
     mapsFile = jsonData["mapsFile"]
+    mapsFileGP = jsonData["mapsFileGP"]
     pointsFile = jsonData["pointsFile"]
     transactionLog = jsonData["transactionLog"]
 else:
@@ -218,12 +219,12 @@ def home():
     )
 
 @cached(cache)
-def getMapData():
+def getMapData(mapFile = None):
     # get data from maps json
-    print("[getMapData] Reading map data from", mapsFile)
+    print("[getMapData] Reading map data from", mapFile)
 
-    if os.path.exists(mapsFile):
-        with open (mapsFile, "r") as mapFile:
+    if os.path.exists(mapFile):
+        with open (mapFile, "r") as mapFile:
             mapData = json.load(mapFile)
     else:
         print("[Map info] No map info file exists.")
@@ -235,24 +236,29 @@ def getMapData():
     minVotes = 0
 
     if len(mapData) != 0:
-        for map in mapData['ranks'].items():
-            mapData['ranks'][map[0]]['numvotes'] = len(map[1]['players'])
-            totalVotes += len(map[1]['players'])
-            
-            for player, vote in map[1]['players'].items():
-                if vote == 1:
-                    plusVotes += 1
-                elif vote == 0:
-                    minVotes += 1
-        mapData['ranks']['totalVotes'] = totalVotes
-        mapData['ranks']['plusVotes']  = plusVotes
-        mapData['ranks']['minVotes']   = minVotes
-
+        try:
+            for map in mapData['ranks'].items():
+                mapData['ranks'][map[0]]['numvotes'] = len(map[1]['players'])
+                totalVotes += len(map[1]['players'])
+                
+                for player, vote in map[1]['players'].items():
+                    if vote == 1:
+                        plusVotes += 1
+                    elif vote == 0:
+                        minVotes += 1
+            mapData['ranks']['totalVotes'] = totalVotes
+            mapData['ranks']['plusVotes']  = plusVotes
+            mapData['ranks']['minVotes']   = minVotes
+        except:
+            print("[getMapData] Could not get ranks info from", mapFile)
         # get total records
-        totalRecords = 0
-        for player in mapData['players'].items():
-            totalRecords += player[1][3]
-        mapData['totalRecords'] = totalRecords
+        try:
+            totalRecords = 0
+            for player in mapData['players'].items():
+                totalRecords += player[1][3]
+            mapData['totalRecords'] = totalRecords
+        except:
+            print("[getMapData] Could not get players info from", mapFile)
     else:
         mapData['players'] = []
         mapData['ranks'] = []
@@ -302,9 +308,60 @@ def maps():
         userName = None
 
     # get map data
-    mapData = getMapData()
+    mapData = getMapData(mapsFile)
 
     return render_template("maps.html",
+        discordUser=discordUser,
+        mapData=mapData,
+        userName = userName
+    )
+
+@app.route("/maps-gp/")
+def maps_gp():
+    
+    try:
+        # get data from the discord user
+        if discord.authorized:
+            discordUser = discord.fetch_user()
+        else:
+            # create a user with blank data
+            class blankUser:
+                name = "Log in"
+                id = 0
+                avatar_url = None
+                discriminator = ''
+            discordUser = blankUser
+
+    except:
+        return redirect(url_for("logout"))
+
+    # retrieve user bindings
+    if os.path.exists(kartUsersFile) and discord.authorized:
+        with open(kartUsersFile, "rt") as kartUsersData:
+            try:
+                kartUsers = json.load(kartUsersData)
+            except:
+                print("Couldn't load kart users file. Does it have data and is the syntax correct?")
+                userName = None
+
+        kartUsersData.close()
+
+        if str(discordUser.id) in kartUsers['kartUsers']:
+            print(f"[Discord <> Kart bind] Matched {discordUser.name} to {kartUsers['kartUsers'][str(discordUser.id)]['playerName']}")
+            userName = kartUsers['kartUsers'][str(discordUser.id)]['playerName']
+        else:
+            print(f"[Discord <> Kart bind] Could not match {discordUser.name}. Using empty data for profile")
+            userName = None
+    elif not os.path.exists(kartUsersFile):
+        print("[Discord <> Kart bind] No kart users file exists. Unable to match any users.")
+        userName = None
+    elif not discord.authorized:
+        userName = None
+
+    # get map data
+    mapData = getMapData(mapsFileGP)
+
+    return render_template("maps_gp.html",
         discordUser=discordUser,
         mapData=mapData,
         userName = userName

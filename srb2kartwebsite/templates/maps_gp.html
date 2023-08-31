@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}Map list{% endblock %}
+
+{% block content %}
+
+    <h1 class="text-center text-warning mt-3">Maps on the SRB2Kart servers</h1>
+
+    <div class="col text-center text-warning">
+        <.>
+            This page displays the maps that are loaded on the <i>Aqua's Grand Prix</i> server.<br>
+            <br>
+            Some maps overwrite each other. This can mean a map has a wrong thumbnail: the other info will be correct.<br>
+            <br>
+            Data last updated at <b>{{mapData['currTime']}}</b>
+        </p>
+    </div>
+    
+    <hr style="border-top: 10px solid #F7C12F; opacity: 1;">
+
+    <!-- Macro's -->
+    {% macro get_bool(input) -%}
+        {% if input.upper() == "TRUE" %}
+            Yes
+        {% else %}
+            No
+        {% endif %}
+    {%- endmacro %}
+
+    <div class="container text-center">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-6">
+                <h4 class="text-warning">Totals for maps</h4>
+                <table class="table table-sm table-dark table-hover text-warning">
+                    <thead>
+                        <tr>
+                            <th>Packs</th>
+                            <th>Maps</th>
+                            <th>Race maps</th>
+                            <th>Battle maps</th>
+                            <th style="border-left: solid;">Hidden maps</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        <tr>
+                            <td>{{mapData["totalPacks"]}}</td>
+                            <td>{{mapData["totalMaps"]}}</td>
+                            <td>{{mapData["raceMaps"]}}</td>
+                            <td>{{mapData["battleMaps"]}}</td>
+                            <td style="border-left: solid;">{{mapData["hiddenMaps"]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+
+    <hr style="border-top: 10px solid #F7C12F; opacity: 1;">
+
+    <div class="container text-center">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-10">
+    {% if mapData|length != 0 %}
+        {% for pack in mapData["packs"] %}
+                <h4 class="text-warning">{{pack}}</h4>
+                <table class="table table-sm table-dark table-hover text-warning">
+                    <thead>
+                        <tr>
+                            <th>Thumbnail</th>
+                            <th>Map name</th>
+                            <th>Map ID</th>
+                            <th>Type</th>
+                            <th># Laps</th>
+                            <th>Hidden</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                    {% for map in mapData["packs"][pack] %}
+                        <tr>
+                            <td><img src="https://srb2kart.aqua.fyi/static/images/maps-gp/MAP{{mapData['packs'][pack][map]['mapID']}}P.png"></td>
+                            <td>{{mapData["packs"][pack][map]["LEVELNAME"]}} {{mapData["packs"][pack][map]["ZONETITLE"]}}</td>
+                            <td>{{mapData["packs"][pack][map]["mapID"]}}</td>
+
+                            {% if mapData["packs"][pack][map]["TYPEOFLEVEL"].upper() == "RACE" %}
+                                <td>Race</td>
+                            {% elif mapData["packs"][pack][map]["TYPEOFLEVEL"].upper() == "BATTLE" or mapData["packs"][pack][map]["TYPEOFLEVEL"].upper() == "MATCH" %}
+                                <td>Battle</td>
+                            {% elif mapData["packs"][pack][map]["TYPEOFLEVEL"].upper() == "RACE,BATTLE" %}
+                                <td>Race + Battle</td>
+                            {% else %}
+                                <td>???</td>
+                            {% endif %}
+
+                            {% if mapData["packs"][pack][map]["TYPEOFLEVEL"].upper() == "RACE" %}
+                                <td>{{mapData["packs"][pack][map]["NUMLAPS"]}}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+
+                            {% if mapData["packs"][pack][map]["HIDDEN"].upper() == "TRUE" %}
+                                <td>
+                                    {{ get_bool(mapData["packs"][pack][map]["HIDDEN"]) }}
+                                </td>
+                            {% elif mapData["packs"][pack][map]["HIDDEN"].upper() == "FALSE" %}
+                                <td>
+                                    {{ get_bool(mapData["packs"][pack][map]["HIDDEN"]) }}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+        {% endfor %}
+        {% else %}
+            <p class="text-center text-warning">No maps are available.</p>
+        {% endif %}
+                </div>
+            </div>  
+        </div>
+
+    <style>
+        input[type="radio"]{
+            float: left;
+            margin-left: -0.5em;
+
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            background-color: inherit;
+            border-color: inherit;
+            border-style: solid;
+            border-width: thin;
+            border-radius: .25rem;
+            
+            width: 15px;
+            height: 15px;
+        }
+        input[type="radio"]:hover{
+            background-color: inherit;
+            border-color: black;
+            border-style: solid;
+        }
+        input[type="radio"]:checked{
+            background-color: #F7C12F;
+            border-color: black;
+            border-style: solid;
+            width: 15px;
+            height: 15px;
+        }
+
+        .alert-donated {
+            color: black;
+            background-color: #F7C12F;
+            border-color: #F7C12F;
+        }
+        img.skinimage {
+            margin-left: -0.5em;
+        }
+
+        .record {
+            font-family: RaceSport;
+        }
+
+        .recordtime {
+            text-align: right; 
+            width: 90px; 
+            font-family: monospace; 
+            padding-right: 8px!important;
+        }
+
+        span.fs-3 {
+            font-family: RaceSport
+        }
+        span.text-center.fs-4 {
+            font-family: RaceSport
+        }
+        span.text-center.fs-5 {
+            font-family: RaceSport
+        }
+        span.text-center.fs-6 {
+            font-family: RaceSport
+        }
+        h1{
+            text-decoration: underline;
+        }
+        h2 {
+            font-family: RaceSport;
+            text-decoration: underline;
+        }
+        h3 {
+            font-family: RaceSport;
+            text-decoration: underline;
+        }
+        h4 {
+            font-family: RaceSport;
+        }
+
+        label.btn ~ input[type=radio]:checked {
+            background-color: #e6e6e6;
+            border-color: #adadad;
+            color: #333;
+        }
+
+        .btn-outline-donated {
+            color: #01ff89;;
+            border-color: #01ff89;
+        }
+        .btn-outline-donated:hover {
+            color: #000;
+            background-color: #01ff89;
+            border-color: #01ff89;
+        }
+
+        .table-record-player {
+            text-align: right;
+            width: 110px;
+            font-family: monospace;
+            border-right: solid;
+            border-right-color: #A98626;
+            border-right-width: thin;
+        }
+
+        .table-plays {
+            border-left: solid;
+            border-left-color: #A98626;
+            border-left-width: thin;
+            min-width: 55px;
+        }
+
+    </style>
+</form>
+
+{% endblock %}

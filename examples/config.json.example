@@ -5,6 +5,7 @@
     "skinInfoFile": "srb2kartwebsite\\skininfo.json",
     "skinShopPointsRequired": 500,
     "mapsFile": "srb2kartwebsite\\allmaps.json",
+    "mapsFileGP": "srb2kartwebsite\\allmaps-gp.json",
     "pointsFile": "srb2kartwebsite\\reservedPoints.json",
     "transactionLog": "srb2kartwebsite\\transactionlog.txt",
     "scoreLocations": {
