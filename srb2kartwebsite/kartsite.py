@@ -34,13 +34,13 @@ if os.path.exists("config.json"):
     app.config["DISCORD_BOT_TOKEN"] = jsonData["discord"]["botToken"]
     scoreLocations = jsonData["scoreLocations"]
 
-    kartUsersFile = jsonData["kartUsersFile"]
-    skinInfoFile = jsonData["skinInfoFile"]
+    kartUsersFile = os.path.join(jsonData["kartUsersFile"])
+    skinInfoFile = os.path.join(jsonData["skinInfoFile"])
     skinShopPointsRequired = jsonData["skinShopPointsRequired"]
-    mapsFile = jsonData["mapsFile"]
-    mapsFileGP = jsonData["mapsFileGP"]
-    pointsFile = jsonData["pointsFile"]
-    transactionLog = jsonData["transactionLog"]
+    mapsFile = os.path.join(jsonData["mapsFile"])
+    mapsFileGP = os.path.join(jsonData["mapsFileGP"])
+    pointsFile = os.path.join(jsonData["pointsFile"])
+    transactionLog = os.path.join(jsonData["transactionLog"])
 else:
     print("config.json does not yet exist. Please create the file and enter the correct details. See config.json.example for more information.")
     exit(1)
