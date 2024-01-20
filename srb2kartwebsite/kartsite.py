@@ -227,7 +227,7 @@ def getMapData(mapFile = None):
         with open (mapFile, "r") as mapFile:
             mapData = json.load(mapFile)
     else:
-        print("[Map info] No map info file exists.")
+        print(f"[Map info] No map info file exists at {mapFile}.")
         mapData = {}
 
     # count amount of ranks
@@ -302,7 +302,7 @@ def maps():
             print(f"[Discord <> Kart bind] Could not match {discordUser.name}. Using empty data for profile")
             userName = None
     elif not os.path.exists(kartUsersFile):
-        print("[Discord <> Kart bind] No kart users file exists. Unable to match any users.")
+        print(f"[Discord <> Kart bind] No kart users file exists at {kartUsersFile}. Unable to match any users.")
         userName = None
     elif not discord.authorized:
         userName = None
@@ -353,7 +353,7 @@ def maps_gp():
             print(f"[Discord <> Kart bind] Could not match {discordUser.name}. Using empty data for profile")
             userName = None
     elif not os.path.exists(kartUsersFile):
-        print("[Discord <> Kart bind] No kart users file exists. Unable to match any users.")
+        print(f"[Discord <> Kart bind] No kart users file exists at {kartUsersFile}. Unable to match any users.")
         userName = None
     elif not discord.authorized:
         userName = None
@@ -404,7 +404,7 @@ def skinshop():
             print(f"[Discord <> Kart bind] Could not match {discordUser.name}. Using empty data for profile")
             userName = None
     else:
-        print("[Discord <> Kart bind] No kart users file exists. Unable to match any users.")
+        print(f"[Discord <> Kart bind] No kart users file exists at {kartUsersFile}. Unable to match any users.")
         userName = None
     # get the user's score
     if userName != None: playerScore = getKartScore(userName)
@@ -415,7 +415,7 @@ def skinshop():
         with open (skinInfoFile, "r") as skinFile:
             skinData = json.load(skinFile)
     else:
-        print("[Skin info] No skin info file exists.")
+        print(f"[Skin info] No skin info file exists at {skinInfoFile}.")
         skinData = {"no skins found": {
             "realname": "no skins found",
             "facewant": "pibardy",
